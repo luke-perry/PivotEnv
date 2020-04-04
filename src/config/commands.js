@@ -19,6 +19,13 @@ module.exports = [
                     console.log(`add remote ${input.key} to ${input.value}`)
                 },
             })
+            yargs.command({
+                command: 'remove <key>',
+                desc: 'remove a remote',
+                handler: (input) => {
+                    console.log(`remove remote ${input.key} to ${input.value}`)
+                },
+            })
         },
     },
     {

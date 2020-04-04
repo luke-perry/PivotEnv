@@ -7,12 +7,12 @@ jest.mock('Configstore')
 jest.mock('../../utilities/logger')
 
 describe('remoteActions', () => {
+    let mockGet
     let mockSet
-    let mockDelete
 
     beforeEach(() => {
+        mockGet = jest.spyOn(configstore.prototype, 'get').mockReturnValue({})
         mockSet = jest.spyOn(configstore.prototype, 'set').mockReturnValue()
-        mockDelete = jest.spyOn(configstore.prototype, 'delete').mockReturnValue()
     })
 
     describe('#add', () => {
@@ -22,10 +22,12 @@ describe('remoteActions', () => {
 
             remoteActions.add(sampleRemoteName, sampleRemoteUrl)
 
-            expect(mockSet).toHaveBeenCalledWith(sampleRemoteName, sampleRemoteUrl)
+            const exepectedStorageValue = { [sampleRemoteName]: sampleRemoteUrl }
+            expect(mockGet).toHaveBeenCalledWith('remotes')
+            expect(mockSet).toHaveBeenCalledWith('remotes', exepectedStorageValue)
         })
 
-        it('should error if there is no remote name provided', () => {
+        it('should error if there is no url value provided', () => {
             const sampleRemoteUrl = 'www.PCF.com'
 
             remoteActions.add(undefined, sampleRemoteUrl)
@@ -34,13 +36,32 @@ describe('remoteActions', () => {
             expect(logger.error).toHaveBeenCalledWith('Improper input. Remote name and url Required.')
         })
 
-        it('should error if there is no url value provided', () => {
-            const sampleRemoteName = 'default'
+        it('should error if there is no remote name provided', () => {
+            const [sampleRemoteName] = 'default'
 
             remoteActions.add(sampleRemoteName, undefined)
 
             expect(mockSet).not.toHaveBeenCalled()
             expect(logger.error).toHaveBeenCalledWith('Improper input. Remote name and url Required.')
+        })
+    })
+
+    describe('#remove', () => {
+        it('should remove the specified remote', () => {
+            const existingRemotes = { default: 'fancy' }
+            mockGet = jest.spyOn(configstore.prototype, 'get').mockReturnValue(existingRemotes)
+            const sampleRemoteName = 'default'
+
+            remoteActions.remove(sampleRemoteName)
+
+            expect(mockSet).toHaveBeenCalledWith('remotes', {})
+        })
+
+        it('should error if there is no remote name provided', () => {
+            remoteActions.remove()
+
+            expect(mockSet).not.toHaveBeenCalled()
+            expect(logger.error).toHaveBeenCalledWith('Improper input. Remote name required.')
         })
     })
 })

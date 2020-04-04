@@ -10,9 +10,27 @@ const add = (remoteName, url) => {
     }
 
     const store = new Configstore(packageJson.name)
-    store.set(remoteName, url)
+
+    const existingRemotes = store.get('remotes')
+    const updatedRemotes = { ...existingRemotes, [remoteName]: url }
+
+    store.set('remotes', updatedRemotes)
+}
+
+const remove = (remoteName) => {
+    if (!remoteName) {
+        logger.error('Improper input. Remote name required.')
+        return
+    }
+
+    const store = new Configstore(packageJson.name)
+    const remotes = store.get('remotes')
+
+    delete remotes[remoteName]
+    store.set('remotes', remotes)
 }
 
 module.exports = {
     add,
+    remove,
 }
