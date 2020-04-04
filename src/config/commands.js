@@ -4,7 +4,7 @@ module.exports = [
         aliases: ['configure', 'cfg'],
         desc: 'Set config value',
         handler: (input) => {
-            console.log(`setting ${input.key} to ${input.value}`)
+            console.log(`setting ${JSON.stringify(input)}`)
         },
     },
     {

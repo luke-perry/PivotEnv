@@ -26,7 +26,7 @@ Update the documentation appropriately to represent the changes to the behavior 
 ## Commit Messages
 - Use the present tense ("Add feature" not "Added feature")
 - Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
-- Limit the first line to 72 characters or less
+- Limit the first line to 50 characters or less
 - Do not end the subject line with a period
 
 ## Pull Requsts
