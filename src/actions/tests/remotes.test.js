@@ -64,4 +64,18 @@ describe('remoteActions', () => {
             expect(logger.error).toHaveBeenCalledWith('Improper input. Remote name required.')
         })
     })
+
+    describe('#list', () => {
+        it('should print the remotes stored', () => {
+            const sampleRemotes = { default: 'www.pivotal.com', upstream: 'www.amazon.com' }
+            mockGet = jest.spyOn(configstore.prototype, 'get').mockReturnValue(sampleRemotes)
+
+            remoteActions.list()
+
+            expect(mockGet).toHaveBeenCalledWith('remotes')
+            expect(logger.info).toHaveBeenCalledWith('name \t url')
+            expect(logger.info).toHaveBeenCalledWith('default \t www.pivotal.com')
+            expect(logger.info).toHaveBeenCalledWith('upstream \t www.amazon.com')
+        })
+    })
 })

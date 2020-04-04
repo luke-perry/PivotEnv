@@ -30,7 +30,18 @@ const remove = (remoteName) => {
     store.set('remotes', remotes)
 }
 
+const list = () => {
+    const store = new Configstore(packageJson.name)
+    const remotes = store.get('remotes')
+
+    logger.info('name \t url')
+    Object.keys(remotes).forEach((remoteName) => {
+        logger.info(`${remoteName} \t ${remotes[remoteName]}`)
+    })
+}
+
 module.exports = {
     add,
     remove,
+    list,
 }
