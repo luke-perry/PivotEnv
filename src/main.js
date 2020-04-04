@@ -8,4 +8,4 @@ const commands = require('./config/commands')
 setupOptions(yargs, options)
 setupCommands(yargs, commands)
 
-console.log('---------- hello world', yargs.argv)
+const test = yargs.argv
