@@ -24,10 +24,29 @@ describe('configActions', () => {
 
     it('should not allow for unsupported keys', () => {
         const invalidKey = 'meBadKey'
+        const sampleValue = 'jdoe'
 
-        configActions.setValue(invalidKey, '')
+        configActions.setValue(invalidKey, sampleValue)
 
         expect(mockSet).not.toHaveBeenCalled()
         expect(logger.error).toHaveBeenCalledWith('configuration key: "meBadKey" not supported')
+    })
+
+    it('should error if there is no key provided', () => {
+        const sampleValue = 'jdoe'
+
+        configActions.setValue(undefined, sampleValue)
+
+        expect(mockSet).not.toHaveBeenCalled()
+        expect(logger.error).toHaveBeenCalledWith('Improper input. Key and value required.')
+    })
+
+    it('should error if there is no value provided', () => {
+        const sampleKey = 'user'
+
+        configActions.setValue(sampleKey, undefined)
+
+        expect(mockSet).not.toHaveBeenCalled()
+        expect(logger.error).toHaveBeenCalledWith('Improper input. Key and value required.')
     })
 })
