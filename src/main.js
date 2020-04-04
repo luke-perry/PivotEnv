@@ -8,4 +8,4 @@ const commands = require('./config/commands')
 setupOptions(yargs, options)
 setupCommands(yargs, commands)
 
-const test = yargs.argv
+const test = yargs.wrap(96).argv

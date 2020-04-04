@@ -30,13 +30,14 @@ const remove = (remoteName) => {
     store.set('remotes', remotes)
 }
 
-const list = () => {
+const list = (show) => {
+    if (!show) return
+
     const store = new Configstore(packageJson.name)
     const remotes = store.get('remotes')
 
-    logger.info('name \t url')
     Object.keys(remotes).forEach((remoteName) => {
-        logger.info(`${remoteName} \t ${remotes[remoteName]}`)
+        logger.info(`${remoteName} - ${remotes[remoteName]}`)
     })
 }
 

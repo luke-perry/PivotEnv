@@ -10,7 +10,7 @@ const logger = createLogger({
                 format.colorize(),
                 format.printf(
                     (info) => {
-                        if (info) {
+                        if (info.level.includes('error')) {
                             return `${chalk.white.bgRed.bold(' error ')} ${info.message}`
                         }
                         return `${info.message}`

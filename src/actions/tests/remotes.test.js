@@ -70,12 +70,20 @@ describe('remoteActions', () => {
             const sampleRemotes = { default: 'www.pivotal.com', upstream: 'www.amazon.com' }
             mockGet = jest.spyOn(configstore.prototype, 'get').mockReturnValue(sampleRemotes)
 
-            remoteActions.list()
+            remoteActions.list(true)
 
             expect(mockGet).toHaveBeenCalledWith('remotes')
-            expect(logger.info).toHaveBeenCalledWith('name \t url')
-            expect(logger.info).toHaveBeenCalledWith('default \t www.pivotal.com')
-            expect(logger.info).toHaveBeenCalledWith('upstream \t www.amazon.com')
+            expect(logger.info).toHaveBeenCalledWith('default - www.pivotal.com')
+            expect(logger.info).toHaveBeenCalledWith('upstream - www.amazon.com')
+        })
+
+        it('should not print if no list boolean is provided', () => {
+            mockGet = jest.spyOn(configstore.prototype, 'get').mockReturnValue()
+
+            remoteActions.list(undefined)
+
+            expect(mockGet).not.toHaveBeenCalled()
+            expect(logger.info).not.toHaveBeenCalled()
         })
     })
 })

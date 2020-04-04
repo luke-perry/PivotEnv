@@ -1,31 +1,42 @@
+const configActions = require('../actions/config')
+const remoteActions = require('../actions/remotes')
+
 module.exports = [
     {
         command: 'config <key> [value]',
         aliases: ['configure', 'cfg'],
         desc: 'Set config value',
         handler: (input) => {
-            console.log(`setting ${JSON.stringify(input)}`)
+            configActions.setValue(input.key, input.value)
         },
     },
     {
-        command: 'remote <action> <key> [value]',
+        command: 'remote',
         aliases: ['r'],
-        desc: 'manage (add, remove) a remote ',
+        desc: 'manage (add, remove, list) a remote ',
         builder: (yargs) => {
-            yargs.command({
-                command: 'add <key> [value]',
-                desc: 'add a remote',
-                handler: (input) => {
-                    console.log(`add remote ${input.key} to ${input.value}`)
-                },
-            })
             yargs.command({
                 command: 'remove <key>',
                 desc: 'remove a remote',
                 handler: (input) => {
-                    console.log(`remove remote ${input.key} to ${input.value}`)
+                    remoteActions.remove(input.key)
                 },
             })
+            yargs.command({
+                command: 'add <key> [value]',
+                desc: 'add a remote',
+                handler: (input) => {
+                    remoteActions.add(input.key, input.value)
+                },
+            })
+            yargs.option('list', {
+                alias: 'l',
+                describe: 'list remotes',
+                type: 'boolean',
+            })
+        },
+        handler: (input) => {
+            remoteActions.list(input.list)
         },
     },
     {
