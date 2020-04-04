@@ -6,6 +6,11 @@ const packageJson = require('../../package.json')
 const setValue = (key, value) => {
     const supportedKeys = ['user']
 
+    if (!key || !value) {
+        logger.error('Improper input. Key and value required.')
+        return
+    }
+
     if (!supportedKeys.includes(key)) {
         logger.error(`configuration key: "${key}" not supported`)
         return
